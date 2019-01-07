@@ -65,18 +65,15 @@ var Player = function() {
 
 // Check and handle collisions on the different lanes
 Player.prototype.update = function() {
-  switch (this.y) {
-    case 205:
-      this.checkAndHandleCollision(allEnemies.filter(enemy => enemy.y === 230));
-      break;
-    case 120:
-      this.checkAndHandleCollision(allEnemies.filter(enemy => enemy.y === 130));
-      break;
-    case 35:
-      this.checkAndHandleCollision(allEnemies.filter(enemy => enemy.y === 30));
-      break;
-    default:
-      return;
+  // repspawn the player if a collision happened
+  if (
+    allEnemies.some(
+      enemy =>
+        enemy.x > this.x - 10 && enemy.x < this.x + 10 && enemy.y > this.y - 100
+    )
+  ) {
+    this.x = 200;
+    this.y = 375;
   }
 };
 
@@ -98,14 +95,6 @@ Player.prototype.handleOutOfArea = function() {
     this.x = 200;
     this.y = 375;
   } else if (this.y > 375) {
-    this.y = 375;
-  }
-};
-
-// repspawn the player if a collision happened
-Player.prototype.checkAndHandleCollision = function(enemies) {
-  if (enemies.some(enemy => enemy.x > this.x - 10 && enemy.x < this.x + 10)) {
-    this.x = 200;
     this.y = 375;
   }
 };
